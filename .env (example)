@@ -1,0 +1,3 @@
+PORT=3006
+MONGO_URI=<<connection token here>>
+MONGO_DB_NAME=nodejs
