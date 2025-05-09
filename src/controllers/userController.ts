@@ -1,6 +1,6 @@
-import User from "../models/User.js";
-import responseService from "../services/responseService.js";
-import errorService from "../services/errorService.js";
+// import User from "../models/User.js";
+import responseService from "../services/responseService.ts";
+import errorService from "../services/errorService.ts";
 
 // GET all Users
 export async function getAllUsers(req, res) {

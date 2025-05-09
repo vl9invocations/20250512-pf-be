@@ -1,3 +1,13 @@
-PORT=3006
-MONGO_URI=<<connection token here>>
-MONGO_DB_NAME=nodejs
+PORT = 3006
+
+// Postgres connection
+// DB_HOST = "hostname"
+// DB_PORT = 5432
+// DB_NAME = "dbname"
+// DB_USER = "dbuser"
+// DB_PSSWD = "dbpassword"
+//
+// DB_SSL = "true" // or "false"
+// DB_KEY_PATH = "src/db/certs/prv.pem"
+// DB_CERT_PATH = "src/db/certs/cert.pem"
+// DB_CA_PATH = "src/db/certs/ca.pem"

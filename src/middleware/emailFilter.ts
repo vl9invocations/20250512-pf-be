@@ -1,4 +1,4 @@
-import errorService from "../services/errorService.js";
+import errorService from "../services/errorService.ts";
 
 export default function userEmailFilter(req, res, next) {
     const { email } = req.body;

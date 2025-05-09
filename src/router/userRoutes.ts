@@ -1,6 +1,6 @@
 import express from 'express';
-import { getAllUsers, getUser, createUser, updateUser, deleteUser } from '../controllers/userController.js';
-import emailFilter from '../middleware/emailFilter.js';
+import { getAllUsers, getUser, createUser, updateUser, deleteUser } from '../controllers/userController';
+import emailFilter from '../middleware/emailFilter';
 
 const userRotues = express.Router();
 

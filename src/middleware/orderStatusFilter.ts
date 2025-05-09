@@ -1,4 +1,4 @@
-import errorService from '../services/errorService.js';
+import errorService from '../services/errorService';
 
 export default function orderStatusFilter(req, res, next) {
     const { status } = req.body;
