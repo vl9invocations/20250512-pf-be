@@ -3,15 +3,21 @@ import dotenv from 'dotenv';
 
 import router from '../router/router';
 import dbquery from '../db/connection';
+import cors from 'cors';
 
 dotenv.config();
 
 (async () => {
-    const res = await dbquery('SELECT version();', []);
-    console.log(res.rows[0].version);
+    try {
+        const res = await dbquery('SELECT version();', []);
+        console.log(res.rows[0].version);
+    } catch (error) {
+        console.log(error)
+    }
 })();
 
 const app = express();
+app.use(cors('http://localhost:5173'));
 app.use(express.json(), router);
 
 export default app;

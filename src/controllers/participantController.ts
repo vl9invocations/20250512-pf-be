@@ -1,7 +1,7 @@
 // import Order from "../models/Order";
 import responseService from "../services/responseService";
 import errorService from "../services/errorService.js";
-import { response } from "express";
+import query from "../db/connection";
 
 interface Participant {
     id: number;
@@ -9,55 +9,26 @@ interface Participant {
     email: string;
 }
 
-export default function getAllParticipants(req, res) {
+export default async function getAllParticipants(req: any, res: any) {
 
-    const participants: Participant[] = [
-        {
-            id: 1,
-            name: 'John Doe',
-            email: 'test@email.test',
-        },
-        {
-            id: 2,
-            name: 'Jane Doe',
-            email: ''
-        },
-        {
-            id: 3,
-            name: 'John Smith',
-            email: ''
-        },
-    ]
+    const sql = 'SELECT * FROM finale.participants;';
 
-    if (participants && participants.length > 0) {
-        return responseService(res, 200, participants);
-    } else {
-        return errorService(res, 400, new Error('No participants found'));
-    }
+    await query(sql, [])
+        .then((result) => {
+            const participants = result.rows;
+            if (result.rowCount === 0) {
+                return responseService(res, 204, 'No participants found');
+            }
+
+            return responseService(res, 200, participants);
+        })
+        .catch((error) => {
+            console.error('Error executing query', error);
+            errorService(res, 500, new Error('Can\'t get participants'));
+        });
+
+
 }
-
-// GET all Orders
-// export async function getAllOrders(req, res) {
-//     try {
-//         const orders =
-//             await Order.find()
-//                 .select({ __v: 0 })
-//                 .populate('userId', { __v: 0 });
-//         responseService(res, 200, orders);
-//     } catch {
-//         errorService(res, 500, new Error('Can\'t get orders'));
-//     }
-// };
-
-// // GET Order
-// export async function getOrder(req, res) {
-//     try {
-//         const order = await Order.findById(req.params.id).select({ __v: 0 }).populate('userId', { __v: 0 });
-//         responseService(res, 200, order);
-//     } catch {
-//         errorService(res, 400, new Error('Order not found'));
-//     }
-// };
 
 // // POST Order
 // export async function createOrder(req, res) {

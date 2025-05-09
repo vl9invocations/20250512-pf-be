@@ -5,7 +5,8 @@
   "scripts": {
     "start": "ts-node",
     "dev": "npx tsx ./src/server.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "migrate-db": "npx tsx ./src/db/migrations.ts"
   },
   "keywords": [],
   "author": "VK",
@@ -26,6 +27,7 @@
     "typescript": "^5.8.2"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "pg": "^8.15.6"
   }
 }

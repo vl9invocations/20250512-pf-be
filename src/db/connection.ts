@@ -11,6 +11,7 @@ const config = {
     host: process.env.DB_HOST,
     port: process.env.DB_PORT ? parseInt(process.env.DB_PORT, 10) : undefined,
     database: process.env.DB_NAME,
+    schema: process.env.DB_SCHEMA,
     ssl: {
         rejectUnauthorized: true,
         ca: process.env.DB_CA_PATH ? fs.readFileSync(process.env.DB_CA_PATH).toString() : undefined, // Certificate Authority (CA) certificate
