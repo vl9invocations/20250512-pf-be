@@ -7,6 +7,8 @@ CREATE TABLE finale.participants (
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     birthdate DATE NOT NULL,
+    -- event_id INT NOT NULL,
+    -- FOREIGN KEY (event_id) REFERENCES finale.events(id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

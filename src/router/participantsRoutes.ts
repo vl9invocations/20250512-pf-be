@@ -1,24 +1,20 @@
 import express from 'express';
-import getAllParticipants from '../controllers/participantController';
-// import { getAllOrders, getOrder, createOrder, updateOrder, deleteOrder } from '../controllers/orderController.ts';
-// import orderStatusFilter from '../middleware/orderStatusFilter.ts';
+import { addParticipant, deleteParticipant, getAllParticipants, updateParticipant } from '../controllers/participantController';
 
 const participantRoutes = express.Router();
-
-
 
 // * GET ALL
 participantRoutes.get('/', getAllParticipants);
 // participantRoutes.get('/:id', getOrder);
 
 // * POST
-// participantRoutes.post('/', orderStatusFilter, createOrder);
+participantRoutes.post('/', addParticipant);
 
 // * PUT
-// participantRoutes.put('/:id', orderStatusFilter, updateOrder);
+participantRoutes.put('/:id', updateParticipant);
 
 // * DELETE
-// participantRoutes.delete('/:id', deleteOrder);
+participantRoutes.delete('/:id', deleteParticipant);
 
 
 export default participantRoutes;

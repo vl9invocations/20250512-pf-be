@@ -9,9 +9,9 @@ interface Participant {
     email: string;
 }
 
-export default async function getAllParticipants(req: any, res: any) {
+export async function getAllParticipants(req: any, res: any) {
 
-    const sql = 'SELECT * FROM finale.participants;';
+    const sql = 'SELECT * FROM finale.participants ORDER BY id ASC;';
 
     await query(sql, [])
         .then((result) => {
@@ -26,60 +26,90 @@ export default async function getAllParticipants(req: any, res: any) {
             console.error('Error executing query', error);
             errorService(res, 500, new Error('Can\'t get participants'));
         });
-
-
 }
 
-// // POST Order
-// export async function createOrder(req, res) {
-//     const { userId, product, quantity, status = 'pending' } = req.body;
-//     try {
-//         const order = new Order({
-//             userId,
-//             product,
-//             quantity,
-//             status
-//         });
 
-//         await order.save();
-//         const savedOrder = await Order.findById(order._id).select({ __v: 0 });
-//         responseService(res, 201, savedOrder);
-//     } catch (e) {
-//         console.log(e)
-//         errorService(res, 400, new Error('Check the request body.'));
-//     }
-// };
+// Add participant
+export async function addParticipant(req: any, res: any) {
+    const { name, email, birthdate } = req.body;
 
-// // PUT Order
-// export async function updateOrder(req, res) {
-//     try {
-//         const order = await Order.findById(req.params.id).select({ __v: 0 });
-//         if (!order) {
-//             errorService(res, 404, new Error('Order not found'));
-//         } else {
-//             for (let key in req.body) {
-//                 order[key] = req.body[key];
-//             }
-//         }
-//         await order.save();
+    // if (!name || !email || !birthdate) {
+    //     return errorService(res, 400, new Error('Missing required fields: name, email, or birthdate'));
+    // }
 
-//         responseService(res, 200, order);
-//     } catch {
-//         errorService(res, 500, new Error('Can\'t update order'));
-//     }
-// };
+    const sql = 'INSERT INTO finale.participants (name, email, birthdate) VALUES ($1, $2, $3) RETURNING *;';
+    const values = [name, email, birthdate];
 
-// // DELETE Order
-// export async function deleteOrder(req, res) {
-//     try {
-//         const order = await Order.findById(req.params.id);
-//         if (!order) {
-//             return errorService(res, 404, new Error('Order not found'));
-//         } else {
-//             await Order.findByIdAndDelete(req.params.id);
-//         }
-//         responseService(res, 200, 'Order deleted');
-//     } catch {
-//         errorService(res, 500, new Error('Can\'t delete order'))
-//     }
-// };
+    await query(sql, values)
+        .then((result) => {
+            const participant = result.rows[0];
+            return responseService(res, 201, participant);
+        })
+        .catch((error) => {
+            console.error('Error executing query', error);
+            errorService(res, 500, new Error('Can\'t add participant'));
+        });
+}
+
+// Update participant
+export async function updateParticipant(req: any, res: any) {
+    const { id } = req.params;
+    const { name, email, birthdate } = req.body;
+
+    const fields = [];
+    const values = [];
+    let index = 1;
+
+    if (name) {
+        fields.push(`name = $${index++}`);
+        values.push(name);
+    }
+    if (email) {
+        fields.push(`email = $${index++}`);
+        values.push(email);
+    }
+    if (birthdate) {
+        fields.push(`birthdate = $${index++}`);
+        values.push(birthdate);
+    }
+
+    if (fields.length === 0) {
+        return errorService(res, 400, new Error('No fields to update'));
+    }
+
+    const sql = `UPDATE finale.participants SET ${fields.join(', ')} WHERE id = $${index} RETURNING *;`;
+    values.push(id);
+
+    await query(sql, values)
+        .then((result) => {
+            if (result.rowCount === 0) {
+                return errorService(res, 404, new Error('Participant not found'));
+            }
+            const participant = result.rows[0];
+            return responseService(res, 200, participant);
+        })
+        .catch((error) => {
+            console.error('Error executing query', error);
+            errorService(res, 500, new Error('Can\'t update participant'));
+        });
+}
+
+// Dekete participants based on id
+export async function deleteParticipant(req: any, res: any) {
+    const { id } = req.params;
+
+    const sql = 'DELETE FROM finale.participants WHERE id = $1 RETURNING *;';
+    const values = [id];
+
+    await query(sql, values)
+        .then((result) => {
+            if (result.rowCount === 0) {
+                return errorService(res, 404, new Error('Participant not found'));
+            }
+            return responseService(res, 200, 'Participant deleted');
+        })
+        .catch((error) => {
+            console.error('Error executing query', error);
+            errorService(res, 500, new Error('Can\'t delete participant'));
+        });
+}

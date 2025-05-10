@@ -17,7 +17,7 @@ dotenv.config();
 })();
 
 const app = express();
-app.use(cors('http://localhost:5173'));
+app.use(cors(['http://localhost:5173', 'http://localhost']));
 app.use(express.json(), router);
 
 export default app;
