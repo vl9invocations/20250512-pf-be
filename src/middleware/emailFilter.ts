@@ -1,12 +1,12 @@
-import errorService from "../services/errorService.ts";
+// // import errorService from "../services/errorService.ts";
 
-export default function userEmailFilter(req, res, next) {
-    const { email } = req.body;
-    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+// export default function userEmailFilter(req, res, next) {
+//     const { email } = req.body;
+//     const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-    if (!emailRegex.test(email)) {
-        return errorService(res, 400, new Error('Invalid email'));
-    } else {
-        next();
-    }
-}
+//     if (!emailRegex.test(email)) {
+//         return errorService(res, 400, new Error('Invalid email'));
+//     } else {
+//         next();
+//     }
+// }
