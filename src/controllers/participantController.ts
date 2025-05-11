@@ -1,4 +1,4 @@
-// import Order from "../models/Order";
+import { Request, Response, NextFunction } from 'express';
 import responseService from "../services/responseService";
 import errorService from "../services/errorService.js";
 import query from "../db/connection";
@@ -9,7 +9,7 @@ interface Participant {
     email: string;
 }
 
-export async function getAllParticipants(req: any, res: any) {
+export async function getAllParticipants(req: Request, res: Response) {
 
     const sql = 'SELECT * FROM finale.participants ORDER BY id ASC;';
 
@@ -30,7 +30,7 @@ export async function getAllParticipants(req: any, res: any) {
 
 
 // Add participant
-export async function addParticipant(req: any, res: any) {
+export async function addParticipant(req: Request, res: Response) {
     const { name, email, birthdate } = req.body;
 
     // if (!name || !email || !birthdate) {
@@ -52,7 +52,7 @@ export async function addParticipant(req: any, res: any) {
 }
 
 // Update participant
-export async function updateParticipant(req: any, res: any) {
+export async function updateParticipant(req: Request, res: Response) {
     const { id } = req.params;
     const { name, email, birthdate } = req.body;
 
@@ -95,7 +95,7 @@ export async function updateParticipant(req: any, res: any) {
 }
 
 // Dekete participants based on id
-export async function deleteParticipant(req: any, res: any) {
+export async function deleteParticipant(req: Request, res: Response) {
     const { id } = req.params;
 
     const sql = 'DELETE FROM finale.participants WHERE id = $1 RETURNING *;';

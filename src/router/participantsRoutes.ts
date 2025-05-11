@@ -1,5 +1,6 @@
 import express from 'express';
 import { addParticipant, deleteParticipant, getAllParticipants, updateParticipant } from '../controllers/participantController';
+import receivedFormValidation from '../middleware/reveivedFormValidation';
 
 const participantRoutes = express.Router();
 
@@ -8,10 +9,10 @@ participantRoutes.get('/', getAllParticipants);
 // participantRoutes.get('/:id', getOrder);
 
 // * POST
-participantRoutes.post('/', addParticipant);
+participantRoutes.post('/', receivedFormValidation, addParticipant);
 
 // * PUT
-participantRoutes.put('/:id', updateParticipant);
+participantRoutes.put('/:id', receivedFormValidation, updateParticipant);
 
 // * DELETE
 participantRoutes.delete('/:id', deleteParticipant);
